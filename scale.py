@@ -32,18 +32,18 @@ def scaleSetKg():
     h.send_feature_report([0, 0xa0, 0x7e, 0xa0, 0, 0, 0, 0, 0])
 
 def scaleTare():
-    h.send_feature_report([0, 0xa0, 0xdc, 0xa0, 0xff, 0, 0, 0, 0xff])
+    h.send_feature_report([0, 0xa0, 0xfc, 0xa0, 0xff, 0, 0, 0, 0xff])
     time.sleep(0.25)
-    h.send_feature_report([0, 0x90, 0xdc, 0x80, 0, 0, 0, 0, 0])
+    h.send_feature_report([0, 0x90, 0xfc, 0x80, 0, 0, 0, 0, 0])
     time.sleep(0.25)
-    h.send_feature_report([0, 0xa0, 0xde, 0xa0, 0, 0, 0xe0, 0x43, 0])
+    h.send_feature_report([0, 0xa0, 0xfe, 0xa0, 0, 0, 0xe0, 0x43, 0])
     time.sleep(0.25)
 
 def scaleHold():
-    h.send_feature_report([0, 0xa0, 0xda, 0xa0, 0, 0, 0, 0, 0])
+    h.send_feature_report([0, 0xa0, 0xfa, 0xa0, 0, 0, 0, 0, 0])
 
 def scaleHoldOff():
-    h.send_feature_report([0, 0xa0, 0xde, 0xa0, 0, 0, 0, 0, 0])
+    h.send_feature_report([0, 0xa0, 0xfe, 0xa0, 0, 0, 0, 0, 0])
 
 def scaleRead():
     h.send_feature_report([0x00, 0x90, 0xfe, 0x80, 0xff, 0x7f, 0x00, 0x00, 0x03])
