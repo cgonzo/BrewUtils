@@ -16,8 +16,7 @@ def scaleInit():
         return 1
     except IOError, ex:
         print ex
-        print "You probably don't have the hard coded test hid. Update the hid.device line"
-        print "in this script with one from the enumeration list output above and try again."
+        print "Scale not found"
         return 0
 
 def scaleOn():
@@ -32,6 +31,20 @@ def scaleSetLbOz():
 def scaleSetKg():
     h.send_feature_report([0, 0xa0, 0x7e, 0xa0, 0, 0, 0, 0, 0])
 
+def scaleTare():
+    h.send_feature_report([0, 0xa0, 0xdc, 0xa0, 0xff, 0, 0, 0, 0xff])
+    time.sleep(0.25)
+    h.send_feature_report([0, 0x90, 0xdc, 0x80, 0, 0, 0, 0, 0])
+    time.sleep(0.25)
+    h.send_feature_report([0, 0xa0, 0xde, 0xa0, 0, 0, 0xe0, 0x43, 0])
+    time.sleep(0.25)
+
+def scaleHold():
+    h.send_feature_report([0, 0xa0, 0xda, 0xa0, 0, 0, 0, 0, 0])
+
+def scaleHoldOff():
+    h.send_feature_report([0, 0xa0, 0xde, 0xa0, 0, 0, 0, 0, 0])
+
 def scaleRead():
     h.send_feature_report([0x00, 0x90, 0xfe, 0x80, 0xff, 0x7f, 0x00, 0x00, 0x03])
     return h.read(9)
@@ -43,6 +56,12 @@ def rawdata2g( arr ):
 scaleInit()
 scaleOn()
 scaleSetKg()
+input("Press Enter to tare...")
+scaleTare()
+input("Press Enter to hold...")
+scaleHold()
+input("Press Enter to disable hold...")
+scaleHoldOff()
 while 1:
     data = scaleRead()
     print data
