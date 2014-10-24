@@ -1,7 +1,9 @@
+#!/usr/bin/env python
+
 import hid
 import time
 
-def scaleInit:
+def scaleInit():
     global h
     try:
         print "Opening device"
@@ -18,10 +20,10 @@ def scaleInit:
         print "in this script with one from the enumeration list output above and try again."
         return 0
 
-def scaleOn:
+def scaleOn():
     h.send_feature_report([0, 0xa0, 0xde, 0xa0, 0, 0, 0, 0, 0])
 
-def scaleRead:
+def scaleRead():
     h.send_feature_report([0x00, 0x90, 0xfe, 0x80, 0xff, 0x7f, 0x00, 0x00, 0x03])
     return h.read(9)
 
