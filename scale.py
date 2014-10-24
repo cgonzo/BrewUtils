@@ -55,7 +55,7 @@ def scaleRead():
 def rawdata2g( arr ):
     return (arr[2]>>4 & 0xf)*10000+(arr[2] & 0xf)*1000+(arr[1]>>4 & 0xf)*100+(arr[1] & 0xf)*10
 
-def test()
+def test():
     scaleInit()
     scaleOn()
     scaleSetKg()
