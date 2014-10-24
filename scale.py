@@ -23,6 +23,15 @@ def scaleInit():
 def scaleOn():
     h.send_feature_report([0, 0xa0, 0xde, 0xa0, 0, 0, 0, 0, 0])
 
+def scaleSetLb():
+    h.send_feature_report([0, 0xa0, 0x6e, 0xa0, 0, 0, 0, 0, 0])
+
+def scaleSetLbOz():
+    h.send_feature_report([0, 0xa0, 0x5e, 0xa0, 0, 0, 0, 0, 0])
+
+def scaleSetKg():
+    h.send_feature_report([0, 0xa0, 0x7e, 0xa0, 0, 0, 0, 0, 0])
+
 def scaleRead():
     h.send_feature_report([0x00, 0x90, 0xfe, 0x80, 0xff, 0x7f, 0x00, 0x00, 0x03])
     return h.read(9)
@@ -33,6 +42,7 @@ def rawdata2g( arr ):
 
 scaleInit()
 scaleOn()
+scaleSetLb()
 while 1:
     data = scaleRead()
     print data
