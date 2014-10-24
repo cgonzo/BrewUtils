@@ -55,39 +55,39 @@ def scaleRead():
 def rawdata2g( arr ):
     return (arr[2]>>4 & 0xf)*10000+(arr[2] & 0xf)*1000+(arr[1]>>4 & 0xf)*100+(arr[1] & 0xf)*10
 
-
-scaleInit()
-scaleOn()
-scaleSetKg()
-try:
-    input("Press Enter to tare")
-except SyntaxError:
-    pass
-scaleTare()
-try:
-    input("Press Enter to hold...")
-except SyntaxError:
-    pass
-scaleHold()
-try:
-    input("Press Enter to disable hold...")
-except SyntaxError:
-    pass
-scaleHoldOff()
-try:
-    input("Press Enter to turn scale off...")
-except SyntaxError:
-    pass
-scaleOff()
-while 1:
-    data = scaleRead()
-    print data
-    print rawdata2g(data)
-    time.sleep(0.05)
-
+def test()
+    scaleInit()
+    scaleOn()
+    scaleSetKg()
+    try:
+        input("Press Enter to tare")
+    except SyntaxError:
+        pass
+    scaleTare()
+    try:
+        input("Press Enter to hold...")
+    except SyntaxError:
+        pass
+    scaleHold()
+    try:
+        input("Press Enter to disable hold...")
+    except SyntaxError:
+        pass
+    scaleHoldOff()
+    try:
+        input("Press Enter to turn scale off...")
+    except SyntaxError:
+        pass
+    scaleOff()
+    while 1:
+        data = scaleRead()
+        print data
+        print rawdata2g(data)
+        time.sleep(0.05)
     
-print "Closing device"
-h.close()
+        
+    print "Closing device"
+    h.close()
+    print "Done"
 
-
-print "Done"
+test()
