@@ -42,7 +42,7 @@ def rawdata2g( arr ):
 
 scaleInit()
 scaleOn()
-scaleSetLb()
+scaleSetKg()
 while 1:
     data = scaleRead()
     print data
