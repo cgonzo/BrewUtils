@@ -22,6 +22,9 @@ def scaleInit():
 def scaleOn():
     h.send_feature_report([0, 0xa0, 0xde, 0xa0, 0, 0, 0, 0, 0])
 
+def scaleOff():
+    h.send_feature_report([0, 0xa0, 0xdf, 0xa0, 0, 0, 0, 0, 0])
+
 def scaleSetLb():
     h.send_feature_report([0, 0xa0, 0x6e, 0xa0, 0, 0, 0, 0, 0])
 
@@ -71,6 +74,11 @@ try:
 except SyntaxError:
     pass
 scaleHoldOff()
+try:
+    input("Press Enter to turn scale off...")
+except SyntaxError:
+    pass
+scaleOff()
 while 1:
     data = scaleRead()
     print data
