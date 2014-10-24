@@ -56,11 +56,20 @@ def rawdata2g( arr ):
 scaleInit()
 scaleOn()
 scaleSetKg()
-input("Press Enter to tare...")
+try:
+    input("Press Enter to tare")
+except SyntaxError:
+    pass
 scaleTare()
-input("Press Enter to hold...")
+try:
+    input("Press Enter to hold...")
+except SyntaxError:
+    pass
 scaleHold()
-input("Press Enter to disable hold...")
+try:
+    input("Press Enter to disable hold...")
+except SyntaxError:
+    pass
 scaleHoldOff()
 while 1:
     data = scaleRead()
