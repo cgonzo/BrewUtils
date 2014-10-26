@@ -2,7 +2,7 @@
 
 import cgi
 import cgitb
-import thermometer
+from thermometer import thermometerRead
 
 form = cgi.FieldStorage()
 function=form.getvalue("function")
