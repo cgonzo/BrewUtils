@@ -100,7 +100,7 @@ function ajaxGetTemperature() {
     }
   }
   // adding the time is a horrible hack to prevent caching
-  ajaxTemperatureRequest.open("GET", "temperature.txt?"+ new Date().getTime(), true);
+  ajaxTemperatureRequest.open("GET", "utils.py?function=temperature", true);
   ajaxTemperatureRequest.send(null); 
 }
 function ajaxGetWeight() {
@@ -110,8 +110,7 @@ function ajaxGetWeight() {
       changeGlass(ajaxRequest.responseText);
     }
   }
-  // adding the time is a horrible hack to prevent caching
-  ajaxRequest.open("GET", "weight.txt?"+ new Date().getTime(), true);
+  ajaxRequest.open("GET", "utils.py?function=weight", true);
   ajaxRequest.send(null); 
 }
 function resizeWindow() {
