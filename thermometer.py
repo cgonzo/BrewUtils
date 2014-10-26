@@ -35,4 +35,4 @@ def test():
     data = thermometerRead("28-00042d367bff")
     print data
 
-test()
+#test()
