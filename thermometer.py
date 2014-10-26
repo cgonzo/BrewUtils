@@ -4,6 +4,9 @@ import os
 import time
 
 def thermometerInit():
+    # NOTE: this assumes you have the following in your /etc/modules
+    #    w1-gpio
+    #    w1-therm    
     # Set pullup on thermometer
     os.system("gpio -g mode 4 up")
     # wait for the thermometer to come up
@@ -29,9 +32,7 @@ def thermometerRead(serialNumber):
 
 def test():
     thermometerInit()
-    while 1:
-        data = thermometerRead("28-00042d367bff")
-        print data
-        time.sleep(0.05)
+    data = thermometerRead("28-00042d367bff")
+    print data
 
 test()
