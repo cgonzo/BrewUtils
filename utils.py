@@ -4,9 +4,9 @@ import cgi
 import cgitb
 import thermometer
 
-form = cgi.FieldStorage();
+form = cgi.FieldStorage()
 function=form.getvalue("function")
 
-if (function == "temperature) {
+if (function == "temperature"): 
   print(thermometerRead("28-00042d367bff"))
-}
+
