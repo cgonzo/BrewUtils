@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html style="height: 100%;">
+<html>
 <head>
 </head>
-<body style="height: 100%;" onload="changeElements()" >
-<table style="width:100%;height: 100%;">
+<body onload="loadFunctions()" onresize="resizeWindow()" >
+<table id="mainTable" width=100% height=100%>
   <tr>
     <td style="width:50%">
 <!--
@@ -12,7 +12,7 @@ First 50% is beer name, logo, description
       <h1>Beer name</h1>
     </td>
     <td style="width:10%">
-      <svg width="100%" height="100%" viewBox="0 0 400 1500" preserveAspectRatio="xMidYMid meet" zoomAndPan="disable">
+      <svg id="therm" width="100%" height="100%" viewBox="0 0 400 1620" preserveAspectRatio="xMidYMid meet" zoomAndPan="disable">
         <rect id="thermBody" x="100" y="100" width="100" height="1200" style="fill:none;stroke-width:3;stroke:rgb(0,0,0)" />
         <rect id="thermColored" x="100" y="100" width="100" height="1200" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
         <circle id="thermCircle" cx="150" cy="1300" r="120" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
@@ -25,8 +25,8 @@ First 50% is beer name, logo, description
 Third 40% is glass
 For now, have glass inline- eventually separate into file so you can choose which glass
  -->
-      <svg width="100%" height="100%" viewBox="0 0 500 600" preserveAspectRatio="xMidYMid meet" zoomAndPan="disable">
-         <polygon id="glass" stroke-width="1px" id="e1_polygon" style="stroke: #000000; fill: #f0e68c; vector-effect: non-scaling-stroke;" points="100 100 150 500 350 500 400 100"/>
+      <svg id="glass" width="100%" height="100%" viewBox="0 0 500 600" preserveAspectRatio="xMidYMid meet" zoomAndPan="disable">
+         <polygon id="glassColored" stroke-width="1px" id="e1_polygon" style="stroke: #000000; fill: #f0e68c; vector-effect: non-scaling-stroke;" points="100 100 150 500 350 500 400 100"/>
          <polygon id="glassBody" stroke-width="1px" id="e1_polygon" style="stroke: #000000; fill: none; vector-effect: non-scaling-stroke;" points="100 100 150 500 350 500 400 100"/>
       </svg>
     </td>
@@ -38,15 +38,12 @@ For now, have glass inline- eventually separate into file so you can choose whic
 load variables from files
  -->
 <script src="settings.js"></script>
-<script src="weight.js"></script>
-<script src="temperature.js"></script>
 <!--
 functions to change svg graphics based on those files
  -->
 <script>
-function changeThermometer() {
+function changeThermometer(temperature) {
   // targetTemperature, topTemperature, bottomTemperature come from settings.js
-  // temperature comes from temperature.js
   var thermPercentTarget=(targetTemperature-bottomTemperature)/(topTemperature-bottomTemperature);
   thermPercentTarget=((thermPercentTarget>1)?1:thermPercentTarget);
   thermPercentTarget=((thermPercentTarget<0)?0:thermPercentTarget);
@@ -72,9 +69,8 @@ function changeThermometer() {
     document.getElementById("thermCircle").style.fill="blue";
   }
 }
-function changeGlass() {
+function changeGlass(weight) {
   // tareWeight, fullWeight coming from settings.js
-  // weight coming from weight.js
   var fillPercent=(weight-tareWeight)/(fullWeight-tareWeight)
   fillPercent=((fillPercent>1)?1:fillPercent);
   fillPercent=((fillPercent<0)?0:fillPercent);
@@ -89,11 +85,39 @@ function changeGlass() {
   var fillLeft=beerLeft+beerSlope*(1-fillPercent);
   var fillRight=beerRight-beerSlope*(1-fillPercent);
   document.getElementById("glassBody").setAttribute("points",beerLeft+" "+beerTop+" "+beerBottomLeft+" "+beerBottom+" "+beerBottomRight+" "+beerBottom+" "+beerRight+" "+beerTop);
-  document.getElementById("glass").setAttribute("points",fillLeft+" "+fillTop+" "+beerBottomLeft+" "+beerBottom+" "+beerBottomRight+" "+beerBottom+" "+fillRight+" "+fillTop);
+  document.getElementById("glassColored").setAttribute("points",fillLeft+" "+fillTop+" "+beerBottomLeft+" "+beerBottom+" "+beerBottomRight+" "+beerBottom+" "+fillRight+" "+fillTop);
 }
-function changeElements() {
-  changeThermometer();
-  changeGlass();
+function loadFunctions() {
+  setInterval(function() {ajaxGetWeight()},100);
+  setInterval(function() {ajaxGetTemperature()},100);
+  resizeWindow();
+}
+function ajaxGetTemperature() {
+  var ajaxTemperatureRequest = new XMLHttpRequest();
+  ajaxTemperatureRequest.onreadystatechange = function(){
+    if(ajaxTemperatureRequest.readyState == 4){
+      changeThermometer(ajaxTemperatureRequest.responseText);
+    }
+  }
+  // adding the time is a horrible hack to prevent caching
+  ajaxTemperatureRequest.open("GET", "temperature.txt?"+ new Date().getTime(), true);
+  ajaxTemperatureRequest.send(null); 
+}
+function ajaxGetWeight() {
+  var ajaxRequest = new XMLHttpRequest();
+  ajaxRequest.onreadystatechange = function(){
+    if(ajaxRequest.readyState == 4){
+      changeGlass(ajaxRequest.responseText);
+    }
+  }
+  // adding the time is a horrible hack to prevent caching
+  ajaxRequest.open("GET", "weight.txt?"+ new Date().getTime(), true);
+  ajaxRequest.send(null); 
+}
+function resizeWindow() {
+  document.getElementById("mainTable").setAttribute("height",window.innerHeight);
+  document.getElementById("therm").setAttribute("height",window.innerHeight);
+  document.getElementById("glass").setAttribute("height",window.innerHeight);
 }
 </script>
 </body>

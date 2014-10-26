@@ -1,1 +1,0 @@
-var weight=44;
