@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+</head>
+<body style="height: 100%;" onload="changeElements()" >
+<table style="width:100%;height: 100%;">
+  <tr>
+    <td style="width:50%">
+<!--
+First 50% is beer name, logo, description
+ -->
+      <h1>Beer name</h1>
+    </td>
+    <td style="width:10%">
+      <svg width="100%" height="100%" viewBox="0 0 400 1500" preserveAspectRatio="xMidYMid meet" zoomAndPan="disable">
+        <rect id="thermBody" x="100" y="100" width="100" height="1200" style="fill:none;stroke-width:3;stroke:rgb(0,0,0)" />
+        <rect id="thermColored" x="100" y="100" width="100" height="1200" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+        <circle id="thermCircle" cx="150" cy="1300" r="120" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+        <line id="thermTargetLine" x1="100" y1="200" x2="200" y2="200" style="stroke:rgb(0,0,0);stroke-width:6"/>
+      </svg>
+
+    </td>
+    <td style="width:40%">
+<!--
+Third 40% is glass
+For now, have glass inline- eventually separate into file so you can choose which glass
+ -->
+      <svg width="100%" height="100%" viewBox="0 0 500 600" preserveAspectRatio="xMidYMid meet" zoomAndPan="disable">
+         <polygon id="glass" stroke-width="1px" id="e1_polygon" style="stroke: #000000; fill: #f0e68c; vector-effect: non-scaling-stroke;" points="100 100 150 500 350 500 400 100"/>
+         <polygon id="glassBody" stroke-width="1px" id="e1_polygon" style="stroke: #000000; fill: none; vector-effect: non-scaling-stroke;" points="100 100 150 500 350 500 400 100"/>
+      </svg>
+    </td>
+  </tr>
+</table>
+
+
+<!--
+load variables from files
+ -->
+<script src="settings.js"></script>
+<script src="weight.js"></script>
+<script src="temperature.js"></script>
+<!--
+functions to change svg graphics based on those files
+ -->
+<script>
+function changeThermometer() {
+  // targetTemperature, topTemperature, bottomTemperature come from settings.js
+  // temperature comes from temperature.js
+  var thermPercentTarget=(targetTemperature-bottomTemperature)/(topTemperature-bottomTemperature);
+  thermPercentTarget=((thermPercentTarget>1)?1:thermPercentTarget);
+  thermPercentTarget=((thermPercentTarget<0)?0:thermPercentTarget);
+  var thermPercent=(temperature-bottomTemperature)/(topTemperature-bottomTemperature);
+  thermPercent=((thermPercent>1)?1:thermPercent);
+  thermPercent=((thermPercent<0)?0:thermPercent);
+  var thermTop=100;
+  var thermHeight=1100;
+  var thermTargetY=thermTop+thermHeight*(1-thermPercentTarget);
+  var fillHeight=thermHeight*thermPercent;
+  var fillTop=thermTop+(thermHeight-fillHeight);
+  document.getElementById("thermBody").setAttribute("height",thermHeight);
+  document.getElementById("thermBody").setAttribute("y",thermTop);
+  document.getElementById("thermTargetLine").setAttribute("y1",thermTargetY);
+  document.getElementById("thermTargetLine").setAttribute("y2",thermTargetY);
+  document.getElementById("thermColored").setAttribute("height",fillHeight);
+  document.getElementById("thermColored").setAttribute("y",fillTop);
+  if(temperature>targetTemperature){
+    document.getElementById("thermColored").style.fill="red";
+    document.getElementById("thermCircle").style.fill="red";
+  } else {
+    document.getElementById("thermColored").style.fill="blue";
+    document.getElementById("thermCircle").style.fill="blue";
+  }
+}
+function changeGlass() {
+  // tareWeight, fullWeight coming from settings.js
+  // weight coming from weight.js
+  var fillPercent=(weight-tareWeight)/(fullWeight-tareWeight)
+  fillPercent=((fillPercent>1)?1:fillPercent);
+  fillPercent=((fillPercent<0)?0:fillPercent);
+  var beerTop=100;
+  var beerBottom=500;
+  var beerLeft=100;
+  var beerRight=400;
+  var beerSlope=50;
+  var beerBottomLeft=beerLeft+beerSlope;
+  var beerBottomRight=beerRight-beerSlope;
+  var fillTop=beerBottom-(beerBottom-beerTop)*(fillPercent)
+  var fillLeft=beerLeft+beerSlope*(1-fillPercent);
+  var fillRight=beerRight-beerSlope*(1-fillPercent);
+  document.getElementById("glassBody").setAttribute("points",beerLeft+" "+beerTop+" "+beerBottomLeft+" "+beerBottom+" "+beerBottomRight+" "+beerBottom+" "+beerRight+" "+beerTop);
+  document.getElementById("glass").setAttribute("points",fillLeft+" "+fillTop+" "+beerBottomLeft+" "+beerBottom+" "+beerBottomRight+" "+beerBottom+" "+fillRight+" "+fillTop);
+}
+function changeElements() {
+  changeThermometer();
+  changeGlass();
+}
+</script>
+</body>
+</html>
+

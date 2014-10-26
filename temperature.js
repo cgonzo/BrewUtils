@@ -1,0 +1,1 @@
+var temperature=35;
