@@ -6,13 +6,13 @@ import time
 def scaleInit():
     global h
     try:
-        print "Opening device"
+#        print "Opening device"
         h = hid.device()
         h.open(0x4d9, 0x8010)
     
-        print "Manufacturer: %s" % h.get_manufacturer_string()
-        print "Product: %s" % h.get_product_string()
-        print "Serial No: %s" % h.get_serial_number_string()
+#        print "Manufacturer: %s" % h.get_manufacturer_string()
+#        print "Product: %s" % h.get_product_string()
+#        print "Serial No: %s" % h.get_serial_number_string()
         return 1
     except IOError, ex:
         print ex
@@ -59,35 +59,9 @@ def test():
     scaleInit()
     scaleOn()
     scaleSetKg()
-    try:
-        input("Press Enter to tare")
-    except SyntaxError:
-        pass
-    scaleTare()
-    try:
-        input("Press Enter to hold...")
-    except SyntaxError:
-        pass
-    scaleHold()
-    try:
-        input("Press Enter to disable hold...")
-    except SyntaxError:
-        pass
-    scaleHoldOff()
-    try:
-        input("Press Enter to turn scale off...")
-    except SyntaxError:
-        pass
-    scaleOff()
-    while 1:
-        data = scaleRead()
-        print data
-        print rawdata2g(data)
-        time.sleep(0.05)
-    
-        
-    print "Closing device"
-    h.close()
-    print "Done"
+    data = scaleRead()
+    print data
+    print rawdata2g(data)
+    time.sleep(0.05)
 
 #test()
