@@ -8,7 +8,7 @@ def thermometerInit():
     #    w1-gpio
     #    w1-therm    
     # Set pullup on thermometer
-    os.system("gpio -g mode 4 up")
+    os.system("/usr/local/bin/gpio -g mode 4 up")
     # wait for the thermometer to come up
     time.sleep(0.5)
 
