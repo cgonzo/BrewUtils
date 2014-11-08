@@ -3,16 +3,34 @@
 <head>
 </head>
 <body onload="loadFunctions()" onresize="resizeWindow()" >
-<table id="mainTable" width=100% height=100%>
+<table id="mainTable" width="100%" height="100%" cellpadding="0" cellspacing="0">
   <tr>
-    <td style="width:50%">
+    <td id="beerInfo" cellpadding="0" cellspacing="0">
+      <table id="beerInfo" height="100%">
+        <tr>
+          <td align="center" colspan="2">
+            <h1 id="name" style="font-size:30px">Beer name</h1>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">
 <!--
-First 50% is beer name, logo, description
+            <img id="picture" src="beer.jpg.delete">
  -->
-      <h1>Beer name</h1>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h1 id="style">Style</h1>
+          </td>
+          <td align="right" nowrap>
+            <h1 id="abv" style="font-size:30px">0.0% ABV</h1>
+          </td>
+        </tr>
+      </table>
     </td>
-    <td style="width:10%">
-      <svg id="therm" width="100%" height="100%" viewBox="0 0 400 1620" preserveAspectRatio="xMidYMid meet" zoomAndPan="disable">
+    <td style="height:100%">
+      <svg id="therm" viewBox="0 0 300 1620" preserveAspectRatio="xMidYMid meet" zoomAndPan="disable">
         <rect id="thermBody" x="100" y="100" width="100" height="1200" style="fill:none;stroke-width:3;stroke:rgb(0,0,0)" />
         <rect id="thermColored" x="100" y="100" width="100" height="1200" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
         <circle id="thermCircle" cx="150" cy="1300" r="120" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
@@ -20,12 +38,12 @@ First 50% is beer name, logo, description
       </svg>
 
     </td>
-    <td style="width:40%">
+    <td style="height:100%">
 <!--
 Third 40% is glass
 For now, have glass inline- eventually separate into file so you can choose which glass
  -->
-      <svg id="glass" width="100%" height="100%" viewBox="0 0 500 600" preserveAspectRatio="xMidYMid meet" zoomAndPan="disable">
+      <svg id="glass" viewBox="0 0 500 600" preserveAspectRatio="xMidYMid meet" zoomAndPan="disable">
          <polygon id="glassColored" stroke-width="1px" id="e1_polygon" style="stroke: #000000; fill: #f0e68c; vector-effect: non-scaling-stroke;" points="100 100 150 500 350 500 400 100"/>
          <polygon id="glassBody" stroke-width="1px" id="e1_polygon" style="stroke: #000000; fill: none; vector-effect: non-scaling-stroke;" points="100 100 150 500 350 500 400 100"/>
       </svg>
@@ -38,6 +56,7 @@ For now, have glass inline- eventually separate into file so you can choose whic
 load variables from files
  -->
 <script src="settings.js"></script>
+<script src="beer.js"></script>
 <!--
 functions to change svg graphics based on those files
  -->
@@ -88,9 +107,15 @@ function changeGlass(weight) {
   document.getElementById("glassColored").setAttribute("points",fillLeft+" "+fillTop+" "+beerBottomLeft+" "+beerBottom+" "+beerBottomRight+" "+beerBottom+" "+fillRight+" "+fillTop);
 }
 function loadFunctions() {
+  getBeerInfo();
   setInterval(function() {ajaxGetWeight()},100);
   setInterval(function() {ajaxGetTemperature()},100);
   resizeWindow();
+}
+function getBeerInfo() {
+  document.getElementById("name").innerHTML=beerName;
+  document.getElementById("style").innerHTML=beerStyle;
+  document.getElementById("abv").innerHTML=beerABV;
 }
 function ajaxGetTemperature() {
   var ajaxTemperatureRequest = new XMLHttpRequest();
@@ -114,9 +139,29 @@ function ajaxGetWeight() {
   ajaxRequest.send(null); 
 }
 function resizeWindow() {
-  document.getElementById("mainTable").setAttribute("height",window.innerHeight);
-  document.getElementById("therm").setAttribute("height",window.innerHeight);
-  document.getElementById("glass").setAttribute("height",window.innerHeight);
+  // first we have to determine if we're width or height constrained
+  var glassRatioArray=document.getElementById("glass").getAttribute("viewBox").split(" ");
+  var glassRatio=glassRatioArray[3]/glassRatioArray[2];
+  var thermRatioArray=document.getElementById("therm").getAttribute("viewBox").split(" ");
+  var thermRatio=thermRatioArray[3]/thermRatioArray[2];
+  glassWidth=window.innerHeight/glassRatio;
+  thermWidth=window.innerHeight/thermRatio;
+  // If we're width-constrained, we want 50% to be beer info
+  // and the rest to be split as glassWidth and thermWidth
+  beerInfoPercent=0.5;
+  glassWidthPercent=(glassWidth/(glassWidth+thermWidth))/2;
+  thermWidthPercent=(thermWidth/(glassWidth+thermWidth))/2;
+    console.log("width");
+    document.getElementById("mainTable").setAttribute("height",window.innerHeight);
+    document.getElementById("beerInfo").setAttribute("height",window.innerHeight);
+//    document.getElementById("picture").setAttribute("height",window.innerHeight-200);
+    document.getElementById("therm").setAttribute("height",window.innerHeight);
+    document.getElementById("glass").setAttribute("height",window.innerHeight);
+    document.getElementById("mainTable").setAttribute("width",window.innerWidth);
+    document.getElementById("beerInfo").setAttribute("width",window.innerWidth*beerInfoPercent);
+//    document.getElementById("picture").setAttribute("width",window.innerWidth-200);
+    document.getElementById("therm").setAttribute("width",window.innerWidth*thermWidthPercent);
+    document.getElementById("glass").setAttribute("width",window.innerWidth*glassWidthPercent);
 }
 </script>
 </body>
