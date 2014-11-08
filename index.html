@@ -14,9 +14,7 @@
         </tr>
         <tr>
           <td colspan="2" align="center">
-<!--
-            <img id="picture" src="beer.jpg.delete">
- -->
+            <img id="picture" src="beer.jpg">
           </td>
         </tr>
         <tr>
@@ -61,6 +59,7 @@ load variables from files
 functions to change svg graphics based on those files
  -->
 <script>
+var imageRatio;
 function changeThermometer(temperature) {
   // targetTemperature, topTemperature, bottomTemperature come from settings.js
   var thermPercentTarget=(targetTemperature-bottomTemperature)/(topTemperature-bottomTemperature);
@@ -151,17 +150,17 @@ function resizeWindow() {
   beerInfoPercent=0.5;
   glassWidthPercent=(glassWidth/(glassWidth+thermWidth))/2;
   thermWidthPercent=(thermWidth/(glassWidth+thermWidth))/2;
-    console.log("width");
-    document.getElementById("mainTable").setAttribute("height",window.innerHeight);
-    document.getElementById("beerInfo").setAttribute("height",window.innerHeight);
-//    document.getElementById("picture").setAttribute("height",window.innerHeight-200);
-    document.getElementById("therm").setAttribute("height",window.innerHeight);
-    document.getElementById("glass").setAttribute("height",window.innerHeight);
-    document.getElementById("mainTable").setAttribute("width",window.innerWidth);
-    document.getElementById("beerInfo").setAttribute("width",window.innerWidth*beerInfoPercent);
-//    document.getElementById("picture").setAttribute("width",window.innerWidth-200);
-    document.getElementById("therm").setAttribute("width",window.innerWidth*thermWidthPercent);
-    document.getElementById("glass").setAttribute("width",window.innerWidth*glassWidthPercent);
+  console.log(window.innerHeight);
+  document.getElementById("mainTable").setAttribute("height",window.innerHeight);
+  document.getElementById("beerInfo").setAttribute("height",window.innerHeight);
+  document.getElementById("picture").style.maxHeight=window.innerHeight-200+"px";
+  document.getElementById("therm").setAttribute("height",window.innerHeight);
+  document.getElementById("glass").setAttribute("height",window.innerHeight);
+  document.getElementById("mainTable").setAttribute("width",window.innerWidth);
+  document.getElementById("beerInfo").setAttribute("width",window.innerWidth*beerInfoPercent);
+  document.getElementById("picture").style.maxWidth=window.innerWidth*beerInfoPercent+"px";
+  document.getElementById("therm").setAttribute("width",window.innerWidth*thermWidthPercent);
+  document.getElementById("glass").setAttribute("width",window.innerWidth*glassWidthPercent);
 }
 </script>
 </body>
